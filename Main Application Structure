@@ -1,0 +1,57 @@
+// package.json
+{
+  "name": "lifetok-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "mongodb": "^5.0.0",
+    "mongoose": "^7.0.0",
+    "@vercel/analytics": "^1.0.0",
+    "lucide-react": "latest",
+    "tailwindcss": "^3.0.0",
+    "autoprefixer": "^10.0.0",
+    "postcss": "^8.0.0"
+  }
+}
+
+// next.config.js
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['placeholder.com'],
+  },
+}
+
+module.exports = nextConfig
+
+// .env.local
+MONGODB_URI=your_mongodb_connection_string
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+// tailwind.config.js
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        main: "#E07A5F",
+        secondary: "#3D405B",
+        accent: "#81B29A",
+        background: "#F4F1DE"
+      },
+    },
+  },
+  plugins: [],
+}
