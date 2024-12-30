@@ -1,0 +1,68 @@
+// pages/_app.js
+import '../styles/globals.css'
+import { Layout } from '../components/layout'
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  )
+}
+
+export default MyApp
+
+// pages/index.js
+import { useState } from 'react'
+import { Hero } from '../components/hero'
+import { StoryFeed } from '../components/story-feed'
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-background">
+      <Hero />
+      <StoryFeed />
+    </div>
+  )
+}
+
+// pages/stories/[id].js
+import { useRouter } from 'next/router'
+import { StoryViewer } from '../../components/story-viewer'
+
+export default function StoryPage() {
+  const router = useRouter()
+  const { id } = router.query
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <StoryViewer storyId={id} />
+    </div>
+  )
+}
+
+// pages/api/stories.js
+import { connectDB } from '../../lib/mongodb'
+import Story from '../../models/Story'
+
+export default async function handler(req, res) {
+  await connectDB()
+
+  if (req.method === 'GET') {
+    try {
+      const stories = await Story.find({}).sort({ createdAt: -1 })
+      res.status(200).json(stories)
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch stories' })
+    }
+  }
+
+  if (req.method === 'POST') {
+    try {
+      const story = await Story.create(req.body)
+      res.status(201).json(story)
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to create story' })
+    }
+  }
+}
